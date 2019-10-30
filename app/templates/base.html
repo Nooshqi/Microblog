@@ -1,4 +1,7 @@
 <html>
+    <!-- Add title variable when rendering every template-->
+    <!-- Also every variable in the different templates using this base need to be declared when rendering -->
+    <!-- The variables within the content block are defined in the routes file -->
     <head>
       {% if title %}
       <title>{{ title }} - Microblog</title>
@@ -9,9 +12,15 @@
     <body>
         <div>Microblog:
             <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('login') }}">Log In</a>
+            {% if current_user.is_anonymous %}
+            <a href="{{ url_for('login') }}">Login</a>
+            {% else %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+            {% endif %}
+            <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
         </div>
         <hr>
+        <!-- Using the flash() function that pops the message to the user -->
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>
