@@ -1,9 +1,13 @@
 from datetime import datetime
 from app import db
+from app import login
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 #this ORM model defines how the users information is stored in the table
-class User(db.Model):
+#the userMixin is used to get *is_authenticated, *is_active *is_anonymous *get_id()
+
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(64), index = True, unique = True)
     email = db.Column(db.String(120), index = True, unique = True)
@@ -30,5 +34,13 @@ class Post(db.Model):
 
     def __repre__(self):
         return '<Post {}>'.format(self.body)
+
+#this helps flask-login load a user. The decorator is registered with flask-login. 
+#The id argument is pushed as string form flask-login and so has to be converted accordingly
+#guess it populates the current_user variable
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
 
 
