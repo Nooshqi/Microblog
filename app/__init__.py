@@ -8,6 +8,7 @@ import logging
 from logging.handlers import SMTPHandler
 from flask_mail import Mail
 from flask_bootstrap import Bootstrap
+from flask_moment import Moment
 
 #declare the appropriate instances: Flask, database, db migration
 app = Flask(__name__)
@@ -16,6 +17,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 mail=Mail(app)
 bootstrap=Bootstrap(app)
+moment=Moment(app)
 
 #set view function that handles login, for flask_login functionality @login_required 
 login = LoginManager(app)
